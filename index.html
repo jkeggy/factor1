@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Factor Meal Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+  .hero-banner {
+      background-color: #333;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 80%;
+      border-radius: 10px;
+    }
+
+  .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 20px;
+      width: 80%;
+      /* Occupy most of the available width */
+      max-width: 600px;
+      /* Limit width on larger screens */
+    }
+
+    button {
+      background-color: green;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    /* Media query for smaller screens (e.g., mobile) */
+    @media (max-width: 600px) {
+    .button-grid {
+        grid-template-columns: 1fr;
+        /* Single column layout on small screens */
+        width: 90%;
+        /* Use more of the screen width */
+      }
+
+      button {
+        padding: 10px 20px;
+        /* Reduce button padding */
+        font-size: 14px;
+        /* Slightly smaller font */
+      }
+
+    .hero-banner {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>FACTOR MEAL TRACKER</h1>
+  <div class="hero-banner">Hero Banner Content</div>
+  <div class="button-grid">
+    <button onclick="addMeal()">Add Meal</button>
+    <button>Meal History</button>
+    <button>Search Meals</button>
+    <button>Data Visualizations</button>
+  </div>
+  <script>
+    function addMeal() {
+      // Prompt the user for the recipe URL
+      let url = prompt("Enter the Factor 75 recipe URL:");
+      if (url) {
+        // Send a POST request to the /scrape endpoint
+        fetch('/scrape', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              url: url
+            })
+          })
+        .then(response => response.json())
+        .then(data => {
+            // Display the scraped data (replace with your desired display logic)
+            alert(JSON.stringify(data));
+          })
+        .catch(error => {
+            console.error('Error scraping meal:', error);
+            alert('An error occurred while scraping the meal.');
+          });
+      }
+    }
+  </script>
+</body>
+</html>
